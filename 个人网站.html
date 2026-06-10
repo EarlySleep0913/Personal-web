@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="blue-purple" data-mode="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刘博文 - 个人网站</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* ==================== CSS VARIABLES & THEMES ==================== */
+        :root {
+            --font-display: 'Outfit', 'Noto Sans SC', sans-serif;
+            --font-body: 'Noto Sans SC', 'Outfit', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 20px;
+            --radius-sm: 12px;
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.35);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --blur: 20px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Theme: Blue-Purple */
+        [data-theme="blue-purple"] {
+            --accent-1: #6366f1;
+            --accent-2: #8b5cf6;
+            --accent-3: #a78bfa;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #d946ef 100%);
+            --gradient-3: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 30%, #fae8ff 60%, #fce7f3 100%);
+            --blob-1: #818cf8;
+            --blob-2: #c084fc;
+            --blob-3: #f472b6;
+        }
+
+        /* Theme: Fresh Green */
+        [data-theme="fresh-green"] {
+            --accent-1: #10b981;
+            --accent-2: #059669;
+            --accent-3: #34d399;
+            --gradient-1: linear-gradient(135deg, #34d399 0%, #059669 100%);
+            --gradient-2: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+            --gradient-3: linear-gradient(135deg, #059669 0%, #0d9488 100%);
+            --bg-gradient: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 30%, #cffafe 60%, #e0f2fe 100%);
+            --blob-1: #34d399;
+            --blob-2: #2dd4bf;
+            --blob-3: #38bdf8;
+        }
+
+        /* Theme: Warm Orange */
+        [data-theme="warm-orange"] {
+            --accent-1: #f97316;
+            --accent-2: #ea580c;
+            --accent-3: #fb923c;
+            --gradient-1: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+            --gradient-2: linear-gradient(135deg, #f97316 0%, #eab308 50%, #22d3ee 100%);
+            --gradient-3: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+            --bg-gradient: linear-gradient(135deg, #ffedd5 0%, #fef3c7 30%, #fce7f3 60%, #fff1f2 100%);
+            --blob-1: #fb923c;
+            --blob-2: #fbbf24;
+            --blob-3: #f87171;
+        }
+
+        /* Dark Mode */
+        [data-mode="dark"] {
+            --glass-bg: rgba(30, 30, 50, 0.5);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 30%, #312e81 60%, #1e1b4b 100%);
+        }
+
+        [data-mode="light"] {
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+        }
+
+        /* Custom Background Image */
+        body.custom-bg {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        body.custom-bg::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: var(--bg-gradient);
+            opacity: 0.85;
+            z-index: -2;
+        }
+
+        /* ==================== ANIMATED BLOBS ==================== */
+        .blobs {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: float 20s ease-in-out infinite;
+        }
+        .blob-1 {
+            width: 500px; height: 500px;
+            background: var(--blob-1);
+            top: -10%; left: -5%;
+            animation-delay: 0s;
+        }
+        .blob-2 {
+            width: 400px; height: 400px;
+            background: var(--blob-2);
+            top: 40%; right: -10%;
+            animation-delay: -7s;
+        }
+        .blob-3 {
+            width: 350px; height: 350px;
+            background: var(--blob-3);
+            bottom: -5%; left: 30%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 40px) scale(0.95); }
+            75% { transform: translate(30px, 20px) scale(1.02); }
+        }
+
+        /* ==================== GLASS CARD ==================== */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            box-shadow: var(--glass-shadow);
+            transition: all var(--transition);
+        }
+        .glass:hover {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== NAVIGATION ==================== */
+        .nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav:hover {
+            transform: translateX(-50%);
+            box-shadow: var(--glass-shadow);
+        }
+        .nav-logo {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.1rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-right: 16px;
+            white-space: nowrap;
+        }
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 10px;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .nav-links a:hover {
+            color: var(--accent-1);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-primary);
+            padding: 4px;
+        }
+
+        /* ==================== SETTINGS PANEL ==================== */
+        .settings-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            width: 48px;
+            height: 48px;
+            border: none;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all var(--transition);
+            box-shadow: var(--glass-shadow);
+        }
+        .settings-btn:hover {
+            transform: rotate(45deg) scale(1.1);
+        }
+
+        .settings-panel {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            padding: 24px;
+            width: 280px;
+            display: none;
+        }
+        .settings-panel.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .settings-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        .settings-group {
+            margin-bottom: 18px;
+        }
+        .settings-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .theme-options {
+            display: flex;
+            gap: 8px;
+        }
+        .theme-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition);
+            position: relative;
+        }
+        .theme-dot:hover { transform: scale(1.15); }
+        .theme-dot.active { border-color: var(--accent-1); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+        .theme-dot[data-theme="blue-purple"] { background: linear-gradient(135deg, #6366f1, #8b5cf6); }
+        .theme-dot[data-theme="fresh-green"] { background: linear-gradient(135deg, #10b981, #06b6d4); }
+        .theme-dot[data-theme="warm-orange"] { background: linear-gradient(135deg, #f97316, #ef4444); }
+
+        /* Dark mode toggle */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .toggle {
+            width: 48px;
+            height: 26px;
+            background: #cbd5e1;
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background var(--transition);
+            border: none;
+        }
+        .toggle.active { background: var(--accent-1); }
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform var(--transition);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .toggle.active::after { transform: translateX(22px); }
+
+        /* Background upload */
+        .bg-upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 10px;
+            background: var(--gradient-3);
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .bg-upload-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+        .bg-reset-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .bg-reset-btn:hover { border-color: var(--accent-1); color: var(--accent-1); }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        section {
+            padding: 80px 0;
+        }
+
+        /* Section headings */
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* Editable hint */
+        [contenteditable="true"] {
+            outline: none;
+            border-radius: 4px;
+            transition: box-shadow var(--transition);
+            cursor: text;
+        }
+        [contenteditable="true"]:hover {
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        [contenteditable="true"]:focus {
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.4);
+        }
+        .edit-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            opacity: 0;
+            transition: opacity var(--transition);
+            font-style: italic;
+        }
+        [contenteditable="true"]:hover + .edit-hint,
+        [contenteditable="true"]:focus + .edit-hint {
+            opacity: 1;
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .hero-card {
+            padding: 60px 50px;
+            max-width: 700px;
+            width: 100%;
+        }
+        .hero-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient-2);
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            font-family: var(--font-display);
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+        .hero-name {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-title {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+        .hero-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+        .hero-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .hero-link.primary {
+            background: var(--gradient-3);
+            color: white;
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+        }
+        .hero-link.primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); }
+        .hero-link.secondary {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+        }
+        .hero-link.secondary:hover { transform: translateY(-2px); }
+
+        /* ==================== EDUCATION ==================== */
+        .edu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .edu-card {
+            padding: 28px;
+        }
+        .edu-school {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .edu-degree {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .edu-date {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .edu-extra {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        /* ==================== SKILLS ==================== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .skill-category {
+            padding: 24px;
+        }
+        .skill-category-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            color: var(--accent-1);
+        }
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skill-tag {
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: rgba(99, 102, 241, 0.08);
+            color: var(--accent-1);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            transition: all var(--transition);
+        }
+        .skill-tag:hover {
+            background: rgba(99, 102, 241, 0.15);
+            transform: translateY(-1px);
+        }
+
+        /* ==================== EXPERIENCE TIMELINE ==================== */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-2);
+            border-radius: 1px;
+        }
+        .timeline-item {
+            position: relative;
+            margin-bottom: 28px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -28px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent-1);
+            border: 3px solid var(--glass-bg);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .timeline-card {
+            padding: 24px;
+        }
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .timeline-company {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .timeline-role {
+            font-size: 0.88rem;
+            color: var(--accent-1);
+            font-weight: 500;
+        }
+        .timeline-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            white-space: nowrap;
+        }
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .timeline-desc li {
+            margin-bottom: 4px;
+            list-style: none;
+            position: relative;
+            padding-left: 16px;
+        }
+        .timeline-desc li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-1);
+        }
+
+        /* ==================== PROJECTS ==================== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .project-card {
+            padding: 28px;
+        }
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .project-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .project-tech {
+            font-size: 0.78rem;
+            color: var(--accent-1);
+            font-family: var(--font-mono);
+            background: rgba(99, 102, 241, 0.08);
+            padding: 3px 10px;
+            border-radius: 6px;
+        }
+        .project-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .project-desc li {
+            margin-bottom: 4px;
+            list-style: none;
+            position: relative;
+            padding-left: 16px;
+        }
+        .project-desc li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-1);
+        }
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 10px;
+            font-size: 0.82rem;
+            color: var(--accent-1);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--transition);
+        }
+        .project-link:hover { gap: 8px; }
+
+        /* ==================== GITHUB REPOS ==================== */
+        .github-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+        }
+        .repo-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition);
+        }
+        .repo-card:hover {
+            transform: translateY(-4px);
+        }
+        .repo-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .repo-name a {
+            color: var(--accent-1);
+            text-decoration: none;
+        }
+        .repo-name a:hover { text-decoration: underline; }
+        .repo-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.6;
+            flex: 1;
+        }
+        .repo-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .repo-lang {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .repo-lang-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .repo-stars, .repo-forks {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .github-loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .github-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 24px;
+            padding: 10px 24px;
+            border-radius: 12px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .github-link-btn:hover {
+            transform: translateY(-2px);
+            color: var(--accent-1);
+            border-color: var(--accent-1);
+        }
+
+        /* ==================== CAMPUS ==================== */
+        .campus-list {
+            display: grid;
+            gap: 12px;
+        }
+        .campus-item {
+            padding: 20px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .campus-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: var(--gradient-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+        .campus-content { flex: 1; }
+        .campus-role {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .campus-org {
+            font-size: 0.85rem;
+            color: var(--accent-1);
+        }
+        .campus-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* ==================== PORTFOLIO ==================== */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .portfolio-card {
+            padding: 24px;
+            transition: all var(--transition);
+        }
+        .portfolio-card:hover {
+            transform: translateY(-4px);
+        }
+        .portfolio-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: var(--gradient-2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+        }
+        .portfolio-name {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .portfolio-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+        .portfolio-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.82rem;
+            color: var(--accent-1);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all var(--transition);
+        }
+        .portfolio-link:hover { gap: 8px; }
+        .add-card {
+            border: 2px dashed var(--glass-border);
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 180px;
+            cursor: pointer;
+            transition: all var(--transition);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        .add-card:hover {
+            border-color: var(--accent-1);
+            color: var(--accent-1);
+        }
+        .add-card-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        /* ==================== BLOG ==================== */
+        .blog-list {
+            display: grid;
+            gap: 16px;
+        }
+        .blog-item {
+            padding: 24px;
+        }
+        .blog-title {
+            font-family: var(--font-display);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 6px;
+        }
+        .blog-date {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+            margin-bottom: 8px;
+        }
+        .blog-content {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            min-height: 60px;
+        }
+        .blog-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+        .blog-btn {
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            border: 1px solid var(--glass-border);
+            background: transparent;
+            color: var(--text-muted);
+            transition: all var(--transition);
+            font-family: var(--font-body);
+        }
+        .blog-btn:hover {
+            border-color: var(--accent-1);
+            color: var(--accent-1);
+        }
+        .blog-btn.delete:hover {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        /* ==================== CONTACT ==================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .contact-card {
+            padding: 24px;
+            text-align: center;
+        }
+        .contact-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .contact-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        .contact-value {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        .contact-value a {
+            color: var(--accent-1);
+            text-decoration: none;
+        }
+        .contact-value a:hover { text-decoration: underline; }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+        .footer a {
+            color: var(--accent-1);
+            text-decoration: none;
+        }
+
+        /* ==================== EDIT TOGGLE ==================== */
+        .edit-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 12px 20px;
+            border-radius: 14px;
+            border: none;
+            background: var(--gradient-3);
+            color: white;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all var(--transition);
+            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.3);
+            font-family: var(--font-body);
+        }
+        .edit-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4); }
+        .edit-toggle.active {
+            background: linear-gradient(135deg, #10b981, #059669);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        /* ==================== ANIMATIONS ==================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .nav { padding: 10px 16px; top: 10px; }
+            .nav-links { display: none; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                padding: 16px;
+                border-radius: var(--radius);
+                background: var(--glass-bg);
+                backdrop-filter: blur(var(--blur));
+                -webkit-backdrop-filter: blur(var(--blur));
+                border: 1px solid var(--glass-border);
+            }
+            .nav-toggle { display: block; }
+            .hero-card { padding: 40px 24px; }
+            .hero-name { font-size: 2rem; }
+            .edu-grid { grid-template-columns: 1fr; }
+            .settings-panel { right: 10px; width: calc(100vw - 20px); max-width: 300px; }
+            section { padding: 50px 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Blobs -->
+    <div class="blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav glass">
+        <span class="nav-logo">EarlySleep</span>
+        <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('active')" aria-label="菜单">☰</button>
+        <ul class="nav-links">
+            <li><a href="#hero">首页</a></li>
+            <li><a href="#education">教育</a></li>
+            <li><a href="#skills">技能</a></li>
+            <li><a href="#projects">项目</a></li>
+            <li><a href="#github">GitHub</a></li>
+            <li><a href="#campus">校园</a></li>
+            <li><a href="#about">自我评价</a></li>
+            <li><a href="#blog">随笔</a></li>
+            <li><a href="#contact">联系</a></li>
+        </ul>
+    </nav>
+
+    <!-- Settings Button -->
+    <button class="settings-btn" onclick="toggleSettings()" aria-label="设置">⚙</button>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel glass" id="settingsPanel">
+        <div class="settings-title">网站设置</div>
+
+        <div class="settings-group">
+            <div class="settings-label">主题配色</div>
+            <div class="theme-options">
+                <div class="theme-dot active" data-theme="blue-purple" onclick="setTheme('blue-purple')" title="蓝紫渐变"></div>
+                <div class="theme-dot" data-theme="fresh-green" onclick="setTheme('fresh-green')" title="清新绿意"></div>
+                <div class="theme-dot" data-theme="warm-orange" onclick="setTheme('warm-orange')" title="暖阳橙调"></div>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <div class="settings-label">深色模式</div>
+            <div class="toggle-row">
+                <span style="font-size:0.85rem;color:var(--text-secondary)">切换深色/浅色</span>
+                <button class="toggle" id="darkToggle" onclick="toggleDark()"></button>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <div class="settings-label">背景图片</div>
+            <label class="bg-upload-btn">
+                上传图片
+                <input type="file" accept="image/*" onchange="uploadBg(event)" style="display:none">
+            </label>
+            <button class="bg-reset-btn" onclick="resetBg()">恢复默认背景</button>
+        </div>
+
+        <div class="settings-group">
+            <div class="settings-label">数据管理</div>
+            <button class="bg-reset-btn" onclick="clearAllData()" style="border-color:#ef4444;color:#ef4444;margin-top:0">清除所有缓存数据</button>
+        </div>
+    </div>
+
+    <!-- ==================== HERO ==================== -->
+    <section class="hero" id="hero">
+        <div class="hero-card glass fade-in">
+            <div class="hero-avatar"><img src="data:image/jpeg;base64,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" alt="头像" style="width:100%;height:100%;border-radius:50%;object-fit:cover;"></div>
+            <h1 class="hero-name" contenteditable="true" data-key="hero-name">刘博文</h1>
+            <p class="hero-title" contenteditable="true" data-key="hero-title">计算机科学与技术 · 本科在读</p>
+            <div style="margin:16px 0">
+                <span contenteditable="true" data-key="hero-desc" style="font-size:0.9rem;color:var(--text-secondary)">江西省南昌市 | 18770640911 | 1875261181@qq.com</span>
+            </div>
+            <div class="hero-links">
+                <a href="mailto:1875261181@qq.com" class="hero-link primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+                    发邮件
+                </a>
+                <a href="tel:18770640911" class="hero-link secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+                    打电话
+                </a>
+                <a href="https://github.com/EarlySleep0913" target="_blank" class="hero-link secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== EDUCATION ==================== -->
+    <section id="education">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>教育背景</h2>
+                <p>Education</p>
+            </div>
+            <div class="edu-grid">
+                <div class="edu-card glass fade-in">
+                    <div class="edu-school" contenteditable="true" data-key="edu1-school">华东交通大学</div>
+                    <div class="edu-degree" contenteditable="true" data-key="edu1-degree">计算机科学与技术专业 | 本科</div>
+                    <div class="edu-date" contenteditable="true" data-key="edu1-date">2023.09 - 2027.07</div>
+                    <div class="edu-extra" contenteditable="true" data-key="edu1-extra">主修课程：操作系统、编译原理、数据结构与算法、计算机网络、信息安全技术、Python程序设计、C/C++程序设计、单片机原理与应用、人工智能基础等</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SKILLS ==================== -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>专业技能</h2>
+                <p>Technical Skills</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category glass fade-in">
+                    <div class="skill-category-title" contenteditable="true" data-key="skill1-title">编程语言</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag" contenteditable="true" data-key="skill1-1">C</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill1-2">Java</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill1-3">Python</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill1-4">C++</span>
+                    </div>
+                </div>
+                <div class="skill-category glass fade-in">
+                    <div class="skill-category-title" contenteditable="true" data-key="skill2-title">语言能力</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag" contenteditable="true" data-key="skill2-1">大学英语四级</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill2-2">普通话二级甲等</span>
+                    </div>
+                </div>
+                <div class="skill-category glass fade-in">
+                    <div class="skill-category-title" contenteditable="true" data-key="skill3-title">计算机能力</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag" contenteditable="true" data-key="skill3-1">国家计算机三级</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill3-2">PyCharm</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill3-3">VS Code</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill3-4">Git</span>
+                    </div>
+                </div>
+                <div class="skill-category glass fade-in">
+                    <div class="skill-category-title" contenteditable="true" data-key="skill4-title">其他</div>
+                    <div class="skill-tags">
+                        <span class="skill-tag" contenteditable="true" data-key="skill4-1">C1驾照</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill4-2">TensorFlow/Keras</span>
+                        <span class="skill-tag" contenteditable="true" data-key="skill4-3">51单片机</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PROJECTS ==================== -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>项目经验</h2>
+                <p>Projects</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj1-name">车次信息管理系统</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj1-tech">C语言</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj1-1">使用C语言完成车次信息管理系统设计与实现</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj2-name">可编程作息时间控制器</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj2-tech">51单片机</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj2-1">使用51单片机完成可编程作息时间控制器设计与实现</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj3-name">中小企业综合网络设计</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj3-tech">网络工程</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj3-1">完成中小企业综合网络设计与实现</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj4-name">测试用例冗余与遗漏分析</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj4-tech">软件测试</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj4-1">完成测试用例冗余与遗漏并存的问题分析与改进方案设计</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj5-name">宿舍管理系统</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj5-tech">Java / MySQL</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj5-1">使用Java+MySQL完成宿舍管理系统设计与实现</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj6-name">通讯录管理系统</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj6-tech">数据结构</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj6-1">基于数据结构完成通讯录管理系统设计与实现</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj7-name">图书管理系统数据库</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj7-tech">MySQL</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj7-1">使用MySQL完成图书管理系统数据库设计与实现</li>
+                    </ul>
+                </div>
+                <div class="project-card glass fade-in">
+                    <div class="project-header">
+                        <div>
+                            <div class="project-name" contenteditable="true" data-key="proj8-name">MNIST手写数字识别</div>
+                        </div>
+                        <span class="project-tech" contenteditable="true" data-key="proj8-tech">TensorFlow / Keras</span>
+                    </div>
+                    <ul class="project-desc">
+                        <li contenteditable="true" data-key="proj8-1">使用TensorFlow/Keras完成MNIST手写数字识别模型训练与评估</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== GITHUB ==================== -->
+    <section id="github">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>GitHub 开源项目</h2>
+                <p>Open Source Projects</p>
+            </div>
+            <div class="github-grid" id="githubRepos">
+                <div class="repo-card glass fade-in">
+                    <div class="repo-name">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"/></svg>
+                        <a href="https://github.com/EarlySleep0913/pyqt5-desktop-pet" target="_blank">pyqt5-desktop-pet</a>
+                    </div>
+                    <div class="repo-desc">PyQt5 桌面宠物，支持 GIF 动画、行走、拖拽和交互系统</div>
+                    <div class="repo-meta">
+                        <span class="repo-lang"><span class="repo-lang-dot" style="background:#3572A5"></span>Python</span>
+                        <span>更新于 2026/05/27</span>
+                    </div>
+                </div>
+                <div class="repo-card glass fade-in">
+                    <div class="repo-name">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"/></svg>
+                        <a href="https://github.com/EarlySleep0913/desktop-pet" target="_blank">desktop-pet</a>
+                    </div>
+                    <div class="repo-desc">桌面宠物项目</div>
+                    <div class="repo-meta">
+                        <span class="repo-lang"><span class="repo-lang-dot" style="background:#e34c26"></span>HTML</span>
+                        <span>更新于 2026/05/26</span>
+                    </div>
+                </div>
+                <div class="repo-card glass fade-in">
+                    <div class="repo-name">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"/></svg>
+                        <a href="https://github.com/EarlySleep0913/student-score-analyzer" target="_blank">student-score-analyzer</a>
+                    </div>
+                    <div class="repo-desc">学生成绩分析工具</div>
+                    <div class="repo-meta">
+                        <span class="repo-lang"><span class="repo-lang-dot" style="background:#e34c26"></span>HTML</span>
+                        <span>更新于 2026/05/25</span>
+                    </div>
+                </div>
+                <div class="repo-card glass fade-in">
+                    <div class="repo-name">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"/></svg>
+                        <a href="https://github.com/EarlySleep0913/Ruoyi_MedicalDevice" target="_blank">Ruoyi_MedicalDevice</a>
+                    </div>
+                    <div class="repo-desc">基于 RuoYi 框架的医疗器械管理系统</div>
+                    <div class="repo-meta">
+                        <span class="repo-lang"><span class="repo-lang-dot" style="background:#b07219"></span>Java</span>
+                        <span>更新于 2025/11/02</span>
+                    </div>
+                </div>
+                <div class="repo-card glass fade-in">
+                    <div class="repo-name">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"/></svg>
+                        <a href="https://github.com/EarlySleep0913/Danpianji" target="_blank">Danpianji</a>
+                    </div>
+                    <div class="repo-desc">单片机相关实验代码</div>
+                    <div class="repo-meta">
+                        <span class="repo-lang"><span class="repo-lang-dot" style="background:#555555"></span>C</span>
+                        <span>更新于 2025/12/26</span>
+                    </div>
+                </div>
+                <div class="repo-card glass fade-in">
+                    <div class="repo-name">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="var(--text-muted)"><path d="M2 2.5A2.5 2.5 0 014.5 0h8.75a.75.75 0 01.75.75v12.5a.75.75 0 01-.75.75h-2.5a.75.75 0 110-1.5h1.75v-2h-8a1 1 0 00-.714 1.7.75.75 0 01-1.072 1.05A2.495 2.495 0 012 11.5v-9zm10.5-1h-8a1 1 0 00-1 1v6.708A2.486 2.486 0 014.5 9h8V1.5z"/></svg>
+                        <a href="https://github.com/EarlySleep0913/ruanjiangongcheng" target="_blank">ruanjiangongcheng</a>
+                    </div>
+                    <div class="repo-desc">软件工程课程项目</div>
+                    <div class="repo-meta">
+                        <span class="repo-lang"><span class="repo-lang-dot" style="background:#b07219"></span>Java</span>
+                        <span>更新于 2025/12/23</span>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center" class="fade-in">
+                <a href="https://github.com/EarlySleep0913" target="_blank" class="github-link-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    在 GitHub 上查看更多
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CAMPUS ==================== -->
+    <section id="campus">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>校园经历</h2>
+                <p>Campus Experience</p>
+            </div>
+            <div class="campus-list">
+                <div class="campus-item glass fade-in">
+                    <div class="campus-icon">🎤</div>
+                    <div class="campus-content">
+                        <div class="campus-role" contenteditable="true" data-key="campus1-role">院学生会负责人</div>
+                        <div class="campus-org" contenteditable="true" data-key="campus1-org">2023.09 - 2025.06</div>
+                        <div class="campus-desc" contenteditable="true" data-key="campus1-desc">积极参与学生会的各项活动，与其他干事一起参与各类学生活动的策划；主持表彰晚会，负责串场主持、流程衔接与现场氛围把控，保障活动顺利进行；参与朗诵节目排练与舞台演出，配合导演完成彩排与正式演出。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== SELF-EVALUATION ==================== -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>自我评价</h2>
+                <p>About Me</p>
+            </div>
+            <div class="glass fade-in" style="padding:32px">
+                <ul style="list-style:none;font-size:0.93rem;color:var(--text-secondary);line-height:2">
+                    <li style="position:relative;padding-left:20px;margin-bottom:8px" contenteditable="true" data-key="about-1"><span style="position:absolute;left:0;color:var(--accent-1)">▸</span>具备良好的计算机基础与工程实践能力，熟悉 C/Java/Python 的基本开发流程</li>
+                    <li style="position:relative;padding-left:20px;margin-bottom:8px" contenteditable="true" data-key="about-2"><span style="position:absolute;left:0;color:var(--accent-1)">▸</span>对算法与人工智能方向保持持续学习，能完成数据预处理、模型搭建训练与结果分析</li>
+                    <li style="position:relative;padding-left:20px;margin-bottom:8px" contenteditable="true" data-key="about-3"><span style="position:absolute;left:0;color:var(--accent-1)">▸</span>沟通表达能力较好，组织协作经验，团队合作意识强，能与成员高效对齐目标、分工推进并按期交付</li>
+                    <li style="position:relative;padding-left:20px;margin-bottom:8px" contenteditable="true" data-key="about-4"><span style="position:absolute;left:0;color:var(--accent-1)">▸</span>具备较强的逻辑思维与动手能力，重视规范化流程与风险意识，执行力强</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== BLOG ==================== -->
+    <section id="blog">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>个人随笔</h2>
+                <p>Blog & Notes</p>
+            </div>
+            <div class="blog-list" id="blogList">
+                <div class="blog-item glass fade-in" data-blog-id="1">
+                    <div class="blog-title" contenteditable="true" data-key="blog1-title">学习笔记 - 数据结构与算法</div>
+                    <div class="blog-date" contenteditable="true" data-key="blog1-date">2025.05.29</div>
+                    <div class="blog-content" contenteditable="true" data-key="blog1-content">记录了数据结构课程中的链表、树、图等核心知识点，以及排序和查找算法的实现与分析。</div>
+                    <div class="blog-actions">
+                        <button class="blog-btn delete" onclick="deleteBlog(this)">删除</button>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:center;margin-top:24px">
+                <button class="hero-link secondary" onclick="addBlog()" style="cursor:pointer;border:none;font-family:var(--font-body)">+ 新建随笔</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== CONTACT ==================== -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>联系方式</h2>
+                <p>Contact Me</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-card glass fade-in">
+                    <div class="contact-icon">📱</div>
+                    <div class="contact-label">电话</div>
+                    <div class="contact-value" contenteditable="true" data-key="contact-phone">18770640911</div>
+                </div>
+                <div class="contact-card glass fade-in">
+                    <div class="contact-icon">📧</div>
+                    <div class="contact-label">邮箱</div>
+                    <div class="contact-value"><a href="mailto:1875261181@qq.com" contenteditable="true" data-key="contact-email">1875261181@qq.com</a></div>
+                </div>
+                <div class="contact-card glass fade-in">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-label">所在地</div>
+                    <div class="contact-value" contenteditable="true" data-key="contact-location">江西省南昌市</div>
+                </div>
+                <div class="contact-card glass fade-in">
+                    <div class="contact-icon">💻</div>
+                    <div class="contact-label">GitHub</div>
+                    <div class="contact-value"><a href="https://github.com/EarlySleep0913" target="_blank">EarlySleep0913</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p contenteditable="true" data-key="footer-text">© 2025 刘博文 · 用热爱与代码构建未来</p>
+            <p style="margin-top:6px;opacity:0.6">点击任意文字即可编辑 · 修改会自动保存</p>
+        </div>
+    </footer>
+
+    <!-- Edit Mode Toggle -->
+    <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()">
+        <span id="editIcon">✏️</span>
+        <span id="editText">编辑模式</span>
+    </button>
+
+    <script>
+        // ==================== STATE ====================
+        let editMode = false;
+        let settingsOpen = false;
+
+        // ==================== SETTINGS ====================
+        function toggleSettings() {
+            settingsOpen = !settingsOpen;
+            document.getElementById('settingsPanel').classList.toggle('active', settingsOpen);
+        }
+
+        // Close settings when clicking outside
+        document.addEventListener('click', (e) => {
+            if (settingsOpen && !e.target.closest('.settings-panel') && !e.target.closest('.settings-btn')) {
+                settingsOpen = false;
+                document.getElementById('settingsPanel').classList.remove('active');
+            }
+        });
+
+        // ==================== THEME ====================
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+            document.querySelector(`.theme-dot[data-theme="${theme}"]`).classList.add('active');
+            localStorage.setItem('site-theme', theme);
+        }
+
+        // ==================== DARK MODE ====================
+        function toggleDark() {
+            const btn = document.getElementById('darkToggle');
+            const isDark = btn.classList.toggle('active');
+            document.documentElement.setAttribute('data-mode', isDark ? 'dark' : 'light');
+            localStorage.setItem('site-mode', isDark ? 'dark' : 'light');
+        }
+
+        // ==================== BACKGROUND IMAGE ====================
+        function uploadBg(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+                document.body.style.backgroundImage = `url(${ev.target.result})`;
+                document.body.classList.add('custom-bg');
+                localStorage.setItem('site-bg', ev.target.result);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function resetBg() {
+            document.body.style.backgroundImage = '';
+            document.body.classList.remove('custom-bg');
+            localStorage.removeItem('site-bg');
+        }
+
+        function clearAllData() {
+            if (!confirm('确定要清除所有缓存数据吗？页面将恢复为默认内容并刷新。')) return;
+            localStorage.clear();
+            location.reload();
+        }
+
+        // ==================== EDIT MODE ====================
+        function toggleEditMode() {
+            editMode = !editMode;
+            const btn = document.getElementById('editToggle');
+            const icon = document.getElementById('editIcon');
+            const text = document.getElementById('editText');
+
+            btn.classList.toggle('active', editMode);
+            icon.textContent = editMode ? '✅' : '✏️';
+            text.textContent = editMode ? '完成编辑' : '编辑模式';
+
+            // Toggle contenteditable on all editable elements
+            document.querySelectorAll('[contenteditable]').forEach(el => {
+                el.setAttribute('contenteditable', editMode ? 'true' : 'false');
+            });
+
+            if (!editMode) {
+                saveAllContent();
+            }
+        }
+
+        // ==================== LOCAL STORAGE ====================
+        function saveAllContent() {
+            const data = {};
+            document.querySelectorAll('[data-key]').forEach(el => {
+                data[el.getAttribute('data-key')] = el.innerHTML;
+            });
+            localStorage.setItem('site-content', JSON.stringify(data));
+        }
+
+        function loadContent() {
+            const saved = localStorage.getItem('site-content');
+            if (!saved) return;
+            try {
+                const data = JSON.parse(saved);
+                Object.entries(data).forEach(([key, value]) => {
+                    const el = document.querySelector(`[data-key="${key}"]`);
+                    if (el) el.innerHTML = value;
+                });
+            } catch (e) {}
+        }
+
+        function loadSettings() {
+            // Theme
+            const theme = localStorage.getItem('site-theme');
+            if (theme) setTheme(theme);
+
+            // Dark mode
+            const mode = localStorage.getItem('site-mode');
+            if (mode === 'dark') {
+                document.getElementById('darkToggle').classList.add('active');
+                document.documentElement.setAttribute('data-mode', 'dark');
+            }
+
+            // Background
+            const bg = localStorage.getItem('site-bg');
+            if (bg) {
+                document.body.style.backgroundImage = `url(${bg})`;
+                document.body.classList.add('custom-bg');
+            }
+        }
+
+        // Auto-save on edit
+        document.addEventListener('input', (e) => {
+            if (e.target.hasAttribute('data-key')) {
+                clearTimeout(e.target._saveTimeout);
+                e.target._saveTimeout = setTimeout(saveAllContent, 500);
+            }
+        });
+
+        // ==================== BLOG ====================
+        let blogCounter = 100;
+
+        function addBlog() {
+            blogCounter++;
+            const list = document.getElementById('blogList');
+            const item = document.createElement('div');
+            item.className = 'blog-item glass fade-in visible';
+            item.setAttribute('data-blog-id', blogCounter);
+            const today = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+            item.innerHTML = `
+                <div class="blog-title" contenteditable="true" data-key="blog${blogCounter}-title">新随笔标题</div>
+                <div class="blog-date" contenteditable="true" data-key="blog${blogCounter}-date">${today}</div>
+                <div class="blog-content" contenteditable="true" data-key="blog${blogCounter}-content">在这里写下你的想法...</div>
+                <div class="blog-actions">
+                    <button class="blog-btn delete" onclick="deleteBlog(this)">删除</button>
+                </div>
+            `;
+            list.appendChild(item);
+            saveAllContent();
+            // Save blog counter
+            localStorage.setItem('blog-counter', blogCounter);
+        }
+
+        function deleteBlog(btn) {
+            if (!confirm('确定要删除这篇随笔吗？')) return;
+            const item = btn.closest('.blog-item');
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(-10px)';
+            setTimeout(() => {
+                item.remove();
+                saveAllContent();
+            }, 300);
+        }
+
+        // ==================== PORTFOLIO ====================
+        let portCounter = 100;
+
+        function addPortfolioItem() {
+            portCounter++;
+            const grid = document.getElementById('portfolioGrid');
+            const addCard = grid.querySelector('.add-card');
+            const card = document.createElement('div');
+            card.className = 'portfolio-card glass fade-in visible';
+            card.innerHTML = `
+                <div class="portfolio-icon">💡</div>
+                <div class="portfolio-name" contenteditable="true" data-key="port${portCounter}-name">项目名称</div>
+                <div class="portfolio-desc" contenteditable="true" data-key="port${portCounter}-desc">项目描述...</div>
+                <a href="https://github.com/EarlySleep0913" target="_blank" class="portfolio-link">在 GitHub 查看 →</a>
+            `;
+            grid.insertBefore(card, addCard);
+            saveAllContent();
+            localStorage.setItem('port-counter', portCounter);
+        }
+
+        // ==================== SCROLL ANIMATION ====================
+        function handleScroll() {
+            document.querySelectorAll('.fade-in').forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 80) {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('load', () => {
+            loadContent();
+            loadSettings();
+            handleScroll();
+
+            // Load counters
+            const savedBlogCounter = localStorage.getItem('blog-counter');
+            if (savedBlogCounter) blogCounter = parseInt(savedBlogCounter);
+            const savedPortCounter = localStorage.getItem('port-counter');
+            if (savedPortCounter) portCounter = parseInt(savedPortCounter);
+
+            // Initially disable contenteditable (edit mode is off by default)
+            document.querySelectorAll('[contenteditable]').forEach(el => {
+                el.setAttribute('contenteditable', 'false');
+            });
+        });
+    </script>
+</body>
+</html>
